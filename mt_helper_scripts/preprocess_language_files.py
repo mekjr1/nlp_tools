@@ -8,10 +8,10 @@ def create_dir(output_dir):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-def export_json_files(output_dir, filename, df, direction='en-sw'):
+def export_json_files(output_dir, filename, df, src_col='src_col', tgt_col='tgt_col',direction='en-sw'):
     to_be_saved = []
-    src_data = df['source_lang'].values
-    tgt_data = df['target_lang'].values
+    src_data = df[src_col].values
+    tgt_data = df[tgt_col].values
     src_lang, tgt_lang = direction.split('-')
     N_sent = df.shape[0]
     for s in range(N_sent):
@@ -28,8 +28,8 @@ def csv_to_json(input_path, output_path, source_col, target_col, direction='en-s
         df = pd.read_csv(file, sep='\t') if file.endswith('.tsv') else pd.read_csv(file)  # Read TSV or CSV based on file extension
         sc, tg = df[source_col].values[:n_sent], df[target_col].values[:n_sent]
 
-        df_sctg = pd.DataFrame(sc, columns=['source_lang'])
-        df_sctg['target_lang'] = tg
+        df_sctg = pd.DataFrame(sc, columns=['src_col'])
+        df_sctg['tgt_col'] = tg
 
         # Output data
         output_dir = output_path
